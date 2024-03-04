@@ -13,7 +13,8 @@ def create_pipe():
 def move_pipes(pipes):
 	for pipe in pipes:
 		pipe.centerx -= 5
-	return pipes
+	visible_pipes = [pipe for pipe in pipes if pipe.right > -50]
+	return visible_pipes
 
 def draw_pipes(pipes):
 	for pipe in pipes:
@@ -22,18 +23,17 @@ def draw_pipes(pipes):
 		else:
 			flip_pipe = pygame.transform.flip(pipe_surface,False,True)
 			screen.blit(flip_pipe,pipe)
-def remove_pipes(pipes):
-	for pipe in pipes:
-		if pipe.centerx == -600:
-			pipes.remove(pipe)
-	return pipes
+
 def check_collision(pipes):
+	global can_score
 	for pipe in pipes:
 		if bird_rect.colliderect(pipe):
 			death_sound.play()
+			can_score = True
 			return False
 
 	if bird_rect.top <= -100 or bird_rect.bottom >= 900:
+		can_score = True
 		return False
 
 	return True
@@ -66,7 +66,19 @@ def update_score(score, high_score):
 		high_score = score
 	return high_score
 
-pygame.mixer.pre_init(frequency = 44100, size = 16, channels = 1, buffer = 512)
+def pipe_score_check():
+	global score, can_score 
+	
+	if pipe_list:
+		for pipe in pipe_list:
+			if 95 < pipe.centerx < 105 and can_score:
+				score += 1
+				score_sound.play()
+				can_score = False
+			if pipe.centerx < 0:
+				can_score = True
+
+#pygame.mixer.pre_init(frequency = 44100, size = 16, channels = 2, buffer = 1024)
 pygame.init()
 screen = pygame.display.set_mode((576,1024))
 clock = pygame.time.Clock()
@@ -78,7 +90,7 @@ bird_movement = 0
 game_active = True
 score = 0
 high_score = 0
-
+can_score = True
 bg_surface = pygame.image.load('assets/background-day.png').convert()
 bg_surface = pygame.transform.scale2x(bg_surface)
 
@@ -115,6 +127,8 @@ flap_sound = pygame.mixer.Sound('sound/sfx_wing.wav')
 death_sound = pygame.mixer.Sound('sound/sfx_hit.wav')
 score_sound = pygame.mixer.Sound('sound/sfx_point.wav')
 score_sound_countdown = 100
+SCOREEVENT = pygame.USEREVENT + 2
+pygame.time.set_timer(SCOREEVENT,100)
 
 while True:
 	for event in pygame.event.get():
@@ -156,15 +170,11 @@ while True:
 
 		# Pipes
 		pipe_list = move_pipes(pipe_list)
-		pipe_list = remove_pipes(pipe_list)
 		draw_pipes(pipe_list)
 		
-		score += 0.01
+		# Score
+		pipe_score_check()
 		score_display('main_game')
-		score_sound_countdown -= 1
-		if score_sound_countdown <= 0:
-			score_sound.play()
-			score_sound_countdown = 100
 	else:
 		screen.blit(game_over_surface,game_over_rect)
 		high_score = update_score(score,high_score)
