@@ -10,6 +10,20 @@ def create_pipe():
 	top_pipe = pipe_surface.get_rect(midbottom = (700,random_pipe_pos - 300))
 	return bottom_pipe,top_pipe
 
+# Function to create Pipe with length based on the digit of Pi
+def createPipePI():
+	global currentIndex
+	pipePosition = pipeLengthArray[currentIndex]
+	bottomPipe = pipe_surface.get_rect(midtop = (700, pipePosition))
+	topPipe = pipe_surface.get_rect(midbottom = (700, pipePosition - 300))
+	
+	#Increment index
+	if (currentIndex == len(pipeLengthArray)-1):
+		currentIndex = 0
+	else:
+		currentIndex += 1
+	return bottomPipe, topPipe
+
 def move_pipes(pipes):
 	for pipe in pipes:
 		pipe.centerx -= 5
@@ -87,6 +101,7 @@ def populateArray():
 	return digitArray
 
 pipeLengthArray = populateArray()
+currentIndex = 0
 
 #pygame.mixer.pre_init(frequency = 44100, size = 16, channels = 2, buffer = 1024)
 pygame.init()
@@ -156,9 +171,11 @@ while True:
 				bird_rect.center = (100,512)
 				bird_movement = 0
 				score = 0
+				currentIndex = 0
 
 		if event.type == SPAWNPIPE:
 			pipe_list.extend(create_pipe())
+			createPipePI()
 
 		if event.type == BIRDFLAP:
 			if bird_index < 2:
