@@ -121,10 +121,10 @@ game_active = True
 score = 0
 high_score = 0
 can_score = True
-bg_surface = pygame.image.load('assets/background-day-1.png').convert()
+bg_surface = pygame.image.load('assets/background-day.png').convert()
 bg_surface = pygame.transform.scale2x(bg_surface)
 
-floor_surface = pygame.image.load('assets/base-1.png').convert()
+floor_surface = pygame.image.load('assets/base.png').convert()
 floor_surface = pygame.transform.scale2x(floor_surface)
 floor_x_pos = 0
 
@@ -150,7 +150,7 @@ SPAWNPIPE = pygame.USEREVENT
 pygame.time.set_timer(SPAWNPIPE,1200)
 pipe_height = [400,600,850]
 
-game_over_surface = pygame.transform.scale2x(pygame.image.load('assets/message-1.png').convert_alpha())
+game_over_surface = pygame.transform.scale2x(pygame.image.load('assets/message.png').convert_alpha())
 game_over_rect = game_over_surface.get_rect(center = (960,540))
 
 flap_sound = pygame.mixer.Sound('sound/sfx_wing.wav')
