@@ -4,12 +4,6 @@ def draw_floor():
 	screen.blit(floor_surface,(floor_x_pos,900))
 	screen.blit(floor_surface,(floor_x_pos + 1920,900))
 
-def create_pipe():
-	random_pipe_pos = random.choice(pipe_height)
-	bottom_pipe = pipe_surface.get_rect(midtop = (2050,random_pipe_pos))
-	top_pipe = pipe_surface.get_rect(midbottom = (2050,random_pipe_pos - 400))
-	return bottom_pipe,top_pipe
-
 # Function to create Pipe with length based on the digit of Pi
 def createPipePI():
 	global currentIndex, first
@@ -33,7 +27,6 @@ def move_pipes(pipes):
 
 def map(digit):
 	return (850 - (digit * 50))
-	
 
 def draw_pipes(pipes):
 	for pipe in pipes:
