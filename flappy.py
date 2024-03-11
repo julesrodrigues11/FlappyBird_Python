@@ -13,17 +13,17 @@ def create_pipe():
 # Function to create Pipe with length based on the digit of Pi
 def createPipePI():
 	global currentIndex, first
-	pipePosition = pipeLengthArray[currentIndex]
+	pipePosition = map(pipeLengthArray[currentIndex])
 	
 	bottomPipe = pipe_surface.get_rect(midtop = (2050, pipePosition))
-	topPipe = pipe_surface.get_rect(midbottom = (2050, pipePosition - 300))
-	
+	#topPipe = pipe_surface.get_rect(midbottom = (2050, pipePosition - 300))
+		
 	#Increment index
 	if (currentIndex == len(pipeLengthArray)-1):
 		currentIndex = 0
 	else:
 		currentIndex += 1
-	return bottomPipe, topPipe
+	return bottomPipe#, topPipe
 
 def move_pipes(pipes):
 	for pipe in pipes:
@@ -31,13 +31,18 @@ def move_pipes(pipes):
 	visible_pipes = [pipe for pipe in pipes if pipe.right > -50]
 	return visible_pipes
 
+def map(digit):
+	return (850 - (digit * 50))
+	
+
 def draw_pipes(pipes):
 	for pipe in pipes:
 		if pipe.bottom >= 1024:
 			screen.blit(pipe_surface,pipe)
-		else:
-			flip_pipe = pygame.transform.flip(pipe_surface,False,True)
-			screen.blit(flip_pipe,pipe)
+		#Uncomment to render flipped pipe at the top
+		#else:
+			#flip_pipe = pygame.transform.flip(pipe_surface,False,True)
+			#screen.blit(flip_pipe,pipe)
 
 def check_collision(pipes):
 	global can_score
@@ -98,7 +103,7 @@ PI = "31415926535897932384626433832795028841971693993751058209749445923078164062
 def populateArray():
 	digitArray = []
 	for digit in PI:
-		digitArray.append(int(digit)* 100)
+		digitArray.append(int(digit))
 	return digitArray
 
 pipeLengthArray = populateArray()
@@ -144,7 +149,7 @@ pipe_surface = pygame.transform.scale2x(pipe_surface)
 pipe_list = []
 SPAWNPIPE = pygame.USEREVENT
 pygame.time.set_timer(SPAWNPIPE,1200)
-pipe_height = [400,600,800]
+pipe_height = [400,600,850]
 
 game_over_surface = pygame.transform.scale2x(pygame.image.load('assets/message-1.png').convert_alpha())
 game_over_rect = game_over_surface.get_rect(center = (960,540))
@@ -175,8 +180,8 @@ while True:
 				currentIndex = 0
 
 		if event.type == SPAWNPIPE:
-			pipe_list.extend(create_pipe())
-			createPipePI()
+			#pipe_list.extend(create_pipe())
+			pipe_list.append(createPipePI())
 
 		if event.type == BIRDFLAP:
 			if bird_index < 2:
