@@ -2,20 +2,21 @@ import pygame, sys, random
 
 def draw_floor():
 	screen.blit(floor_surface,(floor_x_pos,900))
-	screen.blit(floor_surface,(floor_x_pos + 576,900))
+	screen.blit(floor_surface,(floor_x_pos + 1920,900))
 
 def create_pipe():
 	random_pipe_pos = random.choice(pipe_height)
-	bottom_pipe = pipe_surface.get_rect(midtop = (700,random_pipe_pos))
-	top_pipe = pipe_surface.get_rect(midbottom = (700,random_pipe_pos - 300))
+	bottom_pipe = pipe_surface.get_rect(midtop = (2050,random_pipe_pos))
+	top_pipe = pipe_surface.get_rect(midbottom = (2050,random_pipe_pos - 300))
 	return bottom_pipe,top_pipe
 
 # Function to create Pipe with length based on the digit of Pi
 def createPipePI():
-	global currentIndex
+	global currentIndex, first
 	pipePosition = pipeLengthArray[currentIndex]
-	bottomPipe = pipe_surface.get_rect(midtop = (700, pipePosition))
-	topPipe = pipe_surface.get_rect(midbottom = (700, pipePosition - 300))
+	
+	bottomPipe = pipe_surface.get_rect(midtop = (2050, pipePosition))
+	topPipe = pipe_surface.get_rect(midbottom = (2050, pipePosition - 300))
 	
 	#Increment index
 	if (currentIndex == len(pipeLengthArray)-1):
@@ -211,7 +212,7 @@ while True:
 	# Floor
 	floor_x_pos -= 1
 	draw_floor()
-	if floor_x_pos <= -576:
+	if floor_x_pos <= -1920:
 		floor_x_pos = 0
 	
 
