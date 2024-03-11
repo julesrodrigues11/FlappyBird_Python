@@ -7,7 +7,7 @@ def draw_floor():
 def create_pipe():
 	random_pipe_pos = random.choice(pipe_height)
 	bottom_pipe = pipe_surface.get_rect(midtop = (2050,random_pipe_pos))
-	top_pipe = pipe_surface.get_rect(midbottom = (2050,random_pipe_pos - 300))
+	top_pipe = pipe_surface.get_rect(midbottom = (2050,random_pipe_pos - 400))
 	return bottom_pipe,top_pipe
 
 # Function to create Pipe with length based on the digit of Pi
@@ -16,14 +16,14 @@ def createPipePI():
 	pipePosition = map(pipeLengthArray[currentIndex])
 	
 	bottomPipe = pipe_surface.get_rect(midtop = (2050, pipePosition))
-	#topPipe = pipe_surface.get_rect(midbottom = (2050, pipePosition - 300))
+	topPipe = pipe_surface.get_rect(midbottom = (2050, pipePosition - 300))
 		
 	#Increment index
 	if (currentIndex == len(pipeLengthArray)-1):
 		currentIndex = 0
 	else:
 		currentIndex += 1
-	return bottomPipe#, topPipe
+	return bottomPipe, topPipe
 
 def move_pipes(pipes):
 	for pipe in pipes:
@@ -39,10 +39,9 @@ def draw_pipes(pipes):
 	for pipe in pipes:
 		if pipe.bottom >= 1024:
 			screen.blit(pipe_surface,pipe)
-		#Uncomment to render flipped pipe at the top
-		#else:
-			#flip_pipe = pygame.transform.flip(pipe_surface,False,True)
-			#screen.blit(flip_pipe,pipe)
+		else:
+			flip_pipe = pygame.transform.flip(pipe_surface,False,True)
+			screen.blit(flip_pipe,pipe)
 
 def check_collision(pipes):
 	global can_score
@@ -180,8 +179,7 @@ while True:
 				currentIndex = 0
 
 		if event.type == SPAWNPIPE:
-			#pipe_list.extend(create_pipe())
-			pipe_list.append(createPipePI())
+			pipe_list.extend(createPipePI())
 
 		if event.type == BIRDFLAP:
 			if bird_index < 2:
