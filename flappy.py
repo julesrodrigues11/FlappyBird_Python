@@ -21,7 +21,7 @@ def createPipePI():
 
 def move_pipes(pipes):
 	for pipe in pipes:
-		pipe.centerx -= 5
+		pipe.centerx -= 4
 	visible_pipes = [pipe for pipe in pipes if pipe.right > -50]
 	return visible_pipes
 
@@ -108,7 +108,7 @@ clock = pygame.time.Clock()
 game_font = pygame.font.Font('04B_19.ttf',40)
 
 # Game Variables
-gravity = 0.25
+gravity = 0.15
 bird_movement = 0
 game_active = True
 score = 0
@@ -161,7 +161,7 @@ while True:
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_SPACE and game_active:
 				bird_movement = 0
-				bird_movement -= 12
+				bird_movement -= 8
 				flap_sound.play()
 			if event.key == pygame.K_SPACE and game_active == False:
 				game_active = True
@@ -206,7 +206,7 @@ while True:
 
 
 	# Floor
-	floor_x_pos -= 1
+	floor_x_pos -= 2.5
 	draw_floor()
 	if floor_x_pos <= -1920:
 		floor_x_pos = 0
